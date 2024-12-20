@@ -36,7 +36,7 @@ public List<Ticket> getAllMessagesByStatus(String status){
 
 public Ticket approveTicket(Integer ticketId) throws Exception{
     Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(() -> new IllegalArgumentException());
-    if(ticket.getStatus() != "Pending"){
+    if(!ticket.getStatus().equals("Pending")){
         throw new IllegalArgumentException("Tickets cannot be approved unless pending");
     }
 
@@ -46,11 +46,15 @@ public Ticket approveTicket(Integer ticketId) throws Exception{
 
 public Ticket declineTicket(Integer ticketId) throws Exception{
     Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(() -> new IllegalArgumentException());
-    if(ticket.getStatus() != "Pending"){
-        throw new IllegalArgumentException("Tickets cannot be approved unless pending");
+    if(!ticket.getStatus().equals("Pending")){
+        throw new IllegalArgumentException("Tickets cannot be declined unless pending");
     }
 
-    ticket.setStatus("Decline");
+    ticket.setStatus("Declined");
     return ticketRepository.save(ticket);
+}
+
+public List<Ticket> findByPostedByAndStatus(Integer userId, String status) {
+    return ticketRepository.findByPostedByAndStatus(userId, status);
 }
 }

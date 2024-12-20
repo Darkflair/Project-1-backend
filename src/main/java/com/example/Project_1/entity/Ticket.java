@@ -1,19 +1,19 @@
 package com.example.Project_1.entity;
 
-import jakarta.persistence.*; // Use Jakarta EE for Spring Boot 3+
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "tickets") // Optional: Map to a table named 'tickets'
+@Table(name = "tickets") 
 public class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generate primary key
-    private Long ticketId;
+    private Integer ticketId;
 
     @Column(name="amount")
     private double amount;
 
-    @Column(name="description") // Limits the description length
+    @Column(name="description") 
     private String description;
 
     @Column(name="status")
@@ -22,11 +22,11 @@ public class Ticket {
     @Column (name="postedBy")
     private Integer postedBy;
 
-    // Default constructor (required for JPA)
+  
     public Ticket() {
     }
 
-    // Constructor for convenience
+   
     public Ticket(double amount, String description, String status, Integer postedBy) {
         this.amount = amount;
         this.description = description;
@@ -34,12 +34,11 @@ public class Ticket {
         this.postedBy = postedBy;
     }
 
-    // Getters and Setters
-    public Long getId() {
+    public Integer getId() {
         return ticketId;
     }
 
-    public void setId(Long ticketId) {
+    public void setId(Integer ticketId) {
         this.ticketId = ticketId;
     }
 

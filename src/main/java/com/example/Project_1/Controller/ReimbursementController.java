@@ -20,7 +20,7 @@ public class ReimbursementController {
     @Autowired
     private UserService userService;
     @Autowired
-    private TicketService ticketSerive;
+    private TicketService ticketService;
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
@@ -44,10 +44,10 @@ public class ReimbursementController {
         }
     }
 
-    @PostMapping("/tickets")
+    @PostMapping("/tickets/createTicket")
     public ResponseEntity<?> createTicket(@RequestBody Ticket ticket){
         try{
-            Ticket newTicket = ticketSerive.createTicket(ticket);
+            Ticket newTicket = ticketService.createTicket(ticket);
             return ResponseEntity.ok(newTicket);
         } catch (IllegalArgumentException e){
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -56,40 +56,45 @@ public class ReimbursementController {
         }
     }
 
-    @GetMapping("/user/{userId}/tickets")
+    @GetMapping("/tickets/user/{userId}")
     public ResponseEntity<?> getAllTicketsByAccountId(@PathVariable Integer userId){
-        List<Ticket> tickets = ticketSerive.getAllMessagesByUserId(userId);
+        List<Ticket> tickets = ticketService.getAllMessagesByUserId(userId);
         return ResponseEntity.ok(tickets);
     }
 
-    @GetMapping("/tickets/{status}")
+    @GetMapping("/tickets/status/{status}")
     public ResponseEntity<?> getAllTicketsByStatus(@PathVariable String status){
-        List<Ticket> tickets = ticketSerive.getAllMessagesByStatus(status);
+        List<Ticket> tickets = ticketService.getAllMessagesByStatus(status);
         return ResponseEntity.ok(tickets);
+    }
+
+    @GetMapping("/tickets/user/{userId}/{status}")
+    public List<Ticket> getTicketsByUserIdAndStatus(@PathVariable Integer userId, @PathVariable String status) {
+        return ticketService.findByPostedByAndStatus(userId, status);
     }
 
 
     @PutMapping("/tickets/{ticketId}/approve")
-    public ResponseEntity<Ticket> approveTicket(@PathVariable Integer ticketId){
+    public ResponseEntity<?> approveTicket(@PathVariable Integer ticketId){
         try{
-            Ticket ticket = ticketSerive.approveTicket(ticketId);
+            Ticket ticket = ticketService.approveTicket(ticketId);
             return ResponseEntity.ok(ticket);
         } catch (IllegalArgumentException e){
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body("Ticket can not be approved unless it is Pending");
         } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
     @PutMapping("/tickets/{ticketId}/decline")
-    public ResponseEntity<Ticket> declineTicket(@PathVariable Integer ticketId){
+    public ResponseEntity<?> declineTicket(@PathVariable Integer ticketId){
         try{
-            Ticket ticket = ticketSerive.declineTicket(ticketId);
+            Ticket ticket = ticketService.declineTicket(ticketId);
             return ResponseEntity.ok(ticket);
         } catch (IllegalArgumentException e){
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body("Ticket can not be declined unless it is Pending");
         } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 }

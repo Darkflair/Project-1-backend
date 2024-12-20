@@ -8,35 +8,33 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generate primary key
-    private Integer userId; // Primary key field
+    private Integer userId;
 
     @Column(nullable = false)
     private String role;
 
-    @Column(unique = true, nullable = false) // Enforce unique usernames and non-null
+    @Column(unique = true, nullable = false)
     private String username;
 
     @Column(nullable = false)
     private String password;
 
-    // Default constructor (required for JPA)
     public User() {
     }
 
-    // Constructor without role
+
     public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-    // Constructor with role
+   
     public User(String role, String username, String password) {
         this.role = role;
         this.username = username;
         this.password = password;
     }
 
-    // Getters and Setters
     public Integer getId() {
         return userId;
     }

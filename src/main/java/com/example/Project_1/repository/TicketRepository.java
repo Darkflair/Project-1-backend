@@ -10,4 +10,5 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer>{
 
     List<Ticket> findByPostedBy(Integer userId);
     List<Ticket> findByStatus(String status);
+    List<Ticket> findByPostedByAndStatus(Integer userId, String status);
 } 
