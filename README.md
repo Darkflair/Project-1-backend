@@ -1,0 +1,1 @@
+## This project was a custom Employee Reimburstment portal where the user can submit tickets to a manager and the manager could then go in and approve or deny these tickets. The backend RESTful API was build using Java and SpringBoot and then connected to the React based frontend using AWS RDS which allowed for data to persist between each of my runs.
